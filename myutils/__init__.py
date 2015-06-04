@@ -82,12 +82,11 @@ def override_file(filename):
 
 def round_with_half(x):
     base = int(x)
-    if x*100 % 100 <25:
+    if x * 100 % 100 < 25:
         return base
-    elif  x*100 % 100 > 75:
-        return base+1
-    return base+0.5
-
+    elif x * 100 % 100 > 75:
+        return base + 1
+    return base + 0.5
 
 
 def execute_cmd(cmd, logger=None):
@@ -97,3 +96,26 @@ def execute_cmd(cmd, logger=None):
     else:
         p = subprocess.call(cmd, shell=True)
     return cmd
+
+
+def get_cmap(N):
+    '''Returns a function that maps each index in 0, 1, ... N-1 to a distinct
+    RGB color.'''
+    import matplotlib.pyplot as plt
+    import matplotlib.cm as cmx
+    import matplotlib.colors as colors
+
+    color_norm = colors.Normalize(vmin=0, vmax=N - 1)
+    scalar_map = cmx.ScalarMappable(norm=color_norm, cmap='hsv')
+
+    def map_index_to_rgb_color(index):
+        return scalar_map.to_rgba(index)
+
+    return map_index_to_rgb_color
+
+
+def rename_key(dictionary, oldkey, newkey):
+    """ gets a dict, and rename the old key for the new one"""
+    if newkey != oldkey:
+        dictionary[newkey] = dictionary[oldkey]
+        del dictionary[oldkey]
