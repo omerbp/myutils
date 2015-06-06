@@ -119,3 +119,22 @@ def rename_key(dictionary, oldkey, newkey):
     if newkey != oldkey:
         dictionary[newkey] = dictionary[oldkey]
         del dictionary[oldkey]
+
+def all_options(dl):
+    """
+    gets a dict of list and return a list of dicts (generator)
+    input:
+        model_params = {
+        'kernel': ['rbf', 'poly', 'sigmoid'],
+        'gamma': [1e-3, 1e-4],
+        'C': [0.3, 0.5, 0.7, 1, 3, 6],
+        }
+    output:
+        [{'kernel': 'rbf', 'C': 0.3, 'gamma': 0.001}, {'kernel': 'poly', 'C': 0.5, 'gamma': 0.0001}, {'kernel': 'sigmoid', 'C': 0.7}]
+    """
+    l = list((k,v.__iter__()) for k,v in dl.items())
+    while True:
+        d = dict((k,i.next()) for k,i in l)
+        if not d:
+            break
+        yield d
